@@ -1,0 +1,22 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class Flight extends Model
+{
+    use HasFactory;
+
+    protected $table = "flights";
+
+    protected $fillable = [
+        'name','thumbnail','departure','arrive','code_flight','price'
+    ];
+
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
+    }
+}
