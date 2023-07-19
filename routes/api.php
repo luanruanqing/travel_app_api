@@ -26,6 +26,7 @@ Route::controller(UserController::class)->prefix('user')->group(function () {
 });
 Route::controller(TravelController::class)->prefix('travel')->group(function () {
     Route::get('all', 'all')->name('travel.all');
+    Route::get('get-nearest', 'getNearest')->name('travel.getNearest');
     Route::get('search', 'search')->name('travel.search');
     Route::get('detail/{travel}', 'detail')->name('travel.detail');
     Route::get('popular', 'popular')->name('travel.popular');

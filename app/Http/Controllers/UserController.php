@@ -46,11 +46,8 @@ class UserController extends Controller
                 200,
             );
         } else {
-            $data_rep = $request->all();
-            $errors = [];
-            array_push($errors, ['code' => 'auth-0051', 'message' => 'Unauthorized.','data' => $data_rep]);
             return response()->json([
-                'errors' => $errors
+                'message' => 'Enter again your password and phone number!'
             ], 401);
         }
     }

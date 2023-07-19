@@ -4,22 +4,58 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Travel;
+use App\Models\Location;
+use App\Models\TravelImage;
+use App\Models\Review;
 
 class TravelController extends Controller
 {
+    public function all()
+    {
+        $travels = Travel::all();
+
+        $data =  [
+            'total_size' => $travels->count(),
+            'travels' => $travels
+        ];
+
+        return response()->json($data, 200);
+    }
+
+    public function getNearest()
+    {
+        $travels = Travel::inRandomOrder()->with('images')
+        ->take(4)
+        ->get();
+
+        $data =  [
+            'total_size' => $travels->count(),
+            'travels' => $travels
+        ];
+
+        return response()->json($data, 200);
+    }
+
     public function detail($travel){
-        $travel = Travel::with('location','images','reviews')->findOrFail($travel);
-        $total_rating = 0;
-        foreach ($travel->reviews as $key => $value) {
-            $total_rating += $value->rating;
+        $travel = Travel::findOrFail($travel);
+        $rating_travel = 0;
+
+        if(empty($travel->reviews)){
+            foreach ($travel->reviews as $key => $value) {
+                $total_rating += $value->rating;
+            }
+            $rating_travel = $total_rating / $travel->reviews->count();
         }
-        $rating_travel = $total_rating / $travel->reviews->count();
+
         $data =  [
             'total_size' => $travel->count(),
             'total_size_image' => $travel->images->count(),
             'total_size_reviews' => $travel->reviews->count(),
             'rating_travel' => $rating_travel,
-            'travel' => $travel,
+            'travels' => $travel,
+            'location' => $travel->location,
+            'images' => $travel->images,
+            'reviews' => $travel->reviews,
         ];
         return response()->json($data, 200);
     }
