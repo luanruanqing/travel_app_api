@@ -6,6 +6,7 @@ use App\Http\Controllers\HotelController;
 use App\Http\Controllers\TravelController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\LocationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,7 +27,7 @@ Route::controller(UserController::class)->prefix('user')->group(function () {
 });
 Route::controller(TravelController::class)->prefix('travel')->group(function () {
     Route::get('all', 'all')->name('travel.all');
-    Route::get('get-nearest', 'getNearest')->name('travel.getNearest');
+    Route::get('get-popular', 'getPopular')->name('travel.getPopular');
     Route::get('search', 'search')->name('travel.search');
     Route::get('detail/{travel}', 'detail')->name('travel.detail');
     Route::get('popular', 'popular')->name('travel.popular');
@@ -34,12 +35,15 @@ Route::controller(TravelController::class)->prefix('travel')->group(function () 
 });
 
 Route::controller(HotelController::class)->prefix('hotel')->group(function () {
-    Route::post('add', 'add')->name('hotel.add');
-    Route::get('all', 'all')->name('hotel.all');
+    Route::get('get-all', 'getAll')->name('hotel.getAll');
     Route::get('detail/{hotel}', 'detail')->name('hotel.detail');
     Route::get('search', 'search')->name('hotel.search');
     Route::get('filter', 'filter')->name('hotel.filter');
     Route::get('hotel-by-country/{country}', 'getHotelByCountry')->name('hotel.getHotelByCountry');
+});
+
+Route::controller(LocationController::class)->prefix('location')->group(function () {
+    Route::get('get-all', 'getAll')->name('location.getAll');
 });
 
 Route::controller(BookingController::class)->prefix('booking')->group(function () {

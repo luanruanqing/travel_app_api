@@ -8,21 +8,11 @@ use App\Models\RoomService;
 
 class HotelController extends Controller
 {
-    public function add(Request $request){
-        $bookings = RoomService::create([
-            'room_id' => $request->room_id,
-            'service_id' => $request->service_id,
-        ]);
-
-        $data =  [
-            'bookings' => $bookings
-        ];
-
-        return response()->json($data, 200);
-    }
-    public function all()
+    public function getAll()
     {
-        $hotels = Hotel::with('location','images')->get();
+        $hotels = Hotel::with('location','images')->whereHas('images', function ($query) {
+            $query->whereNotNull('image_url');
+        })->inRandomOrder()->limit(5)->get();
 
         $data =  [
             'total_size' => $hotels->count(),

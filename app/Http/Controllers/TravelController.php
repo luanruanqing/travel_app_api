@@ -22,11 +22,13 @@ class TravelController extends Controller
         return response()->json($data, 200);
     }
 
-    public function getNearest()
+    public function getPopular()
     {
-        $travels = Travel::inRandomOrder()->with('images')
-        ->take(4)
-        ->get();
+        $travels = Travel::inRandomOrder()->with('images','location')->whereHas('images', function ($query) {
+            $query->whereNotNull('image_url');
+        })->whereHas('location', function ($query) {
+            $query->whereNotNull('name');
+        })->take(10)->get();
 
         $data =  [
             'total_size' => $travels->count(),

@@ -16,8 +16,15 @@ class LocationFactory extends Factory
      */
     public function definition(): array
     {
+        $listImage = [
+            'location/dubai.png',
+            'location/japan.png',
+            'location/korea.png',
+            'location/turkey.png',
+        ];
         return [
             'name' => fake()->country(),
+            'image_url' => fake()->randomElement($listImage),
             'latitude' => fake()->latitude(),
             'longitude' => fake()->longitude(),
             'description' => fake()->text(200),

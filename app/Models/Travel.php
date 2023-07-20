@@ -19,6 +19,7 @@ class Travel extends Model
     {
         return $this->belongsTo(Location::class);
     }
+    
     public function reviews()
     {
         return $this->hasMany(Review::class);

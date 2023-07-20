@@ -12,6 +12,11 @@ class Location extends Model
     protected $table = "locations";
 
     protected $fillable = [
-        'name','latitude','longitude','description'
+        'name','image_url','latitude','longitude','description'
     ];
+
+    public function travels()
+    {
+        return $this->hasMany(Travel::class);
+    }
 }
