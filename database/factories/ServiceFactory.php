@@ -16,9 +16,18 @@ class ServiceFactory extends Factory
      */
     public function definition(): array
     {
+        $listImage = [
+            "service/ico_24hour.png",
+            "service/ico_breakfast.png",
+            "service/ico_currency.png",
+            "service/ico_non_refund.png",
+            "service/ico_non_smoke.png",
+            "service/ico_restaurant.png",
+            "service/ico_wifi.png"
+        ];
         return [
             'name' => fake()->name(),
-            'thumbnail' => fake()->imageUrl(50,50),
+            'thumbnail' => fake()->randomElement($listImage),
             'description' => fake()->text(200),
         ];
     }

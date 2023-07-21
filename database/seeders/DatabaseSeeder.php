@@ -38,7 +38,7 @@ class DatabaseSeeder extends Seeder
         ]);
         \App\Models\Image::factory()->create(
         [
-            'image_url' => "fliflight/batik-air.pngght"
+            'image_url' => "flight/batik-air.png"
         ]);
         \App\Models\Image::factory()->create(
         [

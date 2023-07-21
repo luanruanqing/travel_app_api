@@ -10,9 +10,19 @@ class HotelController extends Controller
 {
     public function getAll()
     {
-        $hotels = Hotel::with('location','images')->whereHas('images', function ($query) {
-            $query->whereNotNull('image_url');
-        })->inRandomOrder()->limit(5)->get();
+        $hotels = Hotel::with('location','images','reviews')->has('images')
+        ->whereHas('reviews', function ($query) {
+            $query->where('rating','>',0);
+        })
+        ->get()
+        ->sortByDesc(function ($hotel) {
+            $ratingSum = $hotel->reviews->sum('rating');
+            $ratingCount = $hotel->reviews->count();
+            $rating = $ratingCount > 0 ? $ratingSum / $ratingCount : 0;
+
+            $hotel->rating = $rating;
+        })
+        ->take(10);
 
         $data =  [
             'total_size' => $hotels->count(),
@@ -23,23 +33,19 @@ class HotelController extends Controller
     }
 
     public function detail($hotel){
-        $hotel = Hotel::with('location','services','images','reviews')->findOrFail($hotel);
-        $rating_hotel = 0;
+        $hotels = Hotel::with('location','services','images','reviews')->whereHas('reviews', function ($query) {
+            $query->where('rating','>',0);
+        })->where("id",$hotel)->get()->sortByDesc(function ($hotel) {
+            $ratingSum = $hotel->reviews->sum('rating');
+            $ratingCount = $hotel->reviews->count();
+            $rating = $ratingCount > 0 ? $ratingSum / $ratingCount : 0;
 
-        if(empty($hotel->reviews)){
-            foreach ($hotel->reviews as $key => $value) {
-                $total_rating += $value->rating;
-            }
-            $rating_hotel = $total_rating / $hotel->reviews->count();
-        }
+            $hotel->rating = $rating;
+        });
 
         $data =  [
-            'total_size' => $hotel->count(),
-            'total_size_image' => $hotel->images->count(),
-            'total_size_service' => $hotel->services->count(),
-            'total_size_reviews' => $hotel->reviews->count(),
-            'rating_hotel' => $rating_hotel,
-            'hotel' => $hotel
+            'total_size' => $hotels->count(),
+            'hotels' => $hotels
         ];
         return response()->json($data, 200);
     }
