@@ -8,7 +8,7 @@ use App\Models\RoomService;
 
 class HotelController extends Controller
 {
-    public function getAll()
+        public function getAll()
     {
         $hotels = Hotel::with('location','images','reviews')->has('images')
         ->whereHas('reviews', function ($query) {

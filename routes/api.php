@@ -20,6 +20,8 @@ use App\Http\Controllers\LocationController;
 */
 Route::controller(UserController::class)->prefix('user')->group(function () {
     Route::post('register', 'register')->name('register');
+    Route::get('info', 'info')->middleware('auth:api')->name('info');
+    Route::get('get/{id}', 'get')->name('get');
     Route::post('login', 'login')->name('login');
     Route::post('sendOtp', 'sendOtp')->name('otp.send');
     Route::post('verify-otp', 'verifyOtp')->name('verified.otp');

@@ -22,6 +22,7 @@ class UserFactory extends Factory
             'l_name' => fake()->lastName(),
             'phone_number' => fake()->phoneNumber(),
             'date_of_birth' => fake()->date(),
+            'address' => fake()->address(),
             'avatar' => "user/none-avatar.png",
             'is_phone_verified' => fake()->randomElement(["on",'off']),
             'email' => fake()->unique()->safeEmail(),

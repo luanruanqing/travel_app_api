@@ -9,10 +9,15 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\UserOtp;
 use Illuminate\Support\Facades\Validator;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
+    function get($id){
+        $data = User::find(1);
+
+        return response()->json($data, 200);
+    }
     public function login(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -40,7 +45,7 @@ class UserController extends Controller
 
             return response()->json(
                 [
-                    'token' => $token->token,
+                    'token' => $token,
                     'user' => Auth::user()
                 ],
                 200,
@@ -160,5 +165,43 @@ class UserController extends Controller
             'message' => trans('messages.user_update'),
             'user' => $user,
         ]);
+    }
+
+    public function logout(Request $request){
+        if (!User::checkToken($request)) {
+            $data = [
+                'success' => false,
+                'message' => trans('Token is required'),
+            ];
+
+            return response()->json($data, 422);
+        }
+
+        try {
+            $user = Auth::guard('api')->user();
+            if ($user) {
+                $data = [
+                    'success' => true,
+                    'message' => trans('User logged out successfully'),
+                ];
+
+                return response()->json($data, 200);
+            }
+        } catch (\Exception $ex) {
+            $data = [
+                'success' => false,
+                'message' => trans('Sorry, the user cannot logged out'),
+            ];
+
+            return response()->json($data, 500);
+        }
+    }
+
+    public function info(Request $request){
+        $data = $request->user();
+
+        // $data['member_since_days'] = (integer) $request->user()->created_at->diffInDays();
+
+        return response()->json($data, 200);
     }
 }

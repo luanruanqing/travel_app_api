@@ -2,8 +2,9 @@
 
 namespace App\Providers;
 
-// use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Laravel\Passport\Passport;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -21,6 +22,13 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        // $this->registerPolicies();
+        // Passport::useTokenModel(Token::class);
+        // Passport::useClientModel(Client::class);
+        // Passport::useAuthCodeModel(AuthCode::class);
+        // Passport::usePersonalAccessClientModel(PersonalAccessClient::class);
+        // if (! $this->app->routesAreCached()) {
+        //     Passport::routes();
+        // }
     }
 }
